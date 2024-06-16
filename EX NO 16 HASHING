@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TABLE_SIZE 10
+
+typedef struct Node {
+    int key;
+    int value;
+    struct Node* next;
+} Node;
+
+// Hash function
+int hash(int key) {
+    return key % TABLE_SIZE;
+}
+
+// Initialize the hash table for open addressing
+void initOpenAddr(int* keys, int* values) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        keys[i] = -1;  // -1 indicates empty slot
+        values[i] = -1;
+    }
+}
+
+// Insert into hash table using open addressing
+void insertOpenAddr(int* keys, int* values, int key, int value) {
+    int index = hash(key);
+    int origIndex = index;
+    while (keys[index] != -1 && keys[index] != key) {
+        index = (index + 1) % TABLE_SIZE;
+        if (index == origIndex) {
+            printf("Hash table is full\n");
+            return;
+        }
+    }
+    keys[index] = key;
+    values[index] = value;
+}
